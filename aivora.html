@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TechVersai — Digital Transformation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+<link rel="icon" href="https://tse2.mm.bing.net/th/id/OIP.mWyJm15Xt7Vxt7oNwClEgQHaG7?pid=Api&h=220&P=0">
+<style>
+:root {
+  --bg: #f8f7f4;
+  --bg2: #f2f0ec;
+  --bg3: #eceae4;
+  --card: #ffffff;
+  --text: #1a1815;
+  --text2: #4a4640;
+  --muted: #8a867e;
+  --accent: #1a1815;
+  --gold: #c9a84c;
+  --gold2: #e8c87a;
+  --border: rgba(26,24,21,0.08);
+  --border2: rgba(26,24,21,0.14);
+  --shadow: 0 2px 20px rgba(26,24,21,0.07);
+  --shadow-lg: 0 8px 40px rgba(26,24,21,0.11);
+  --r: 6px;
+  --nav-h: 68px;
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: 'Outfit', sans-serif; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 10px; }
+
+nav {
+  position: fixed; top:0; left:0; right:0; z-index: 900;
+  height: var(--nav-h);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 clamp(1.2rem, 4vw, 3.5rem);
+  background: rgba(248,247,244,0.88);
+  backdrop-filter: blur(20px) saturate(1.6);
+  -webkit-backdrop-filter: blur(20px) saturate(1.6);
+  border-bottom: 1px solid var(--border);
+  transition: background .3s, box-shadow .3s;
+}
+nav.scrolled { background: rgba(248,247,244,0.97); box-shadow: var(--shadow); }
+
+.logo {
+  font-family: 'Outfit', sans-serif; font-weight: 800;
+  font-size: clamp(1.15rem, 2.5vw, 1.35rem);
+  letter-spacing: -.02em; color: var(--text);
+  text-decoration: none; display: flex; align-items: center; gap: .45rem;
+  flex-shrink: 0;
+}
+.logo-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--gold); display: inline-block; flex-shrink: 0; }
+
+.nav-center {
+  display: flex; align-items: center; gap: clamp(1.8rem, 2.5vw, 2.8rem);
+  position: absolute; left: 50%; transform: translateX(-50%);
+}
+.nav-center a {
+  font-size: .82rem; font-weight: 500; letter-spacing: .02em;
+  color: var(--text2); text-decoration: none; transition: color .2s;
+  white-space: nowrap;
+}
+.nav-center a:hover { color: var(--text); }
+
+.nav-right { display: flex; align-items: center; gap: 1rem; flex-shrink: 0; }
+
+.btn-primary {
+  display: inline-flex; align-items: center; gap: .45rem;
+  padding: .6rem 1.4rem;
+  background: var(--text); color: var(--bg);
+  font-family: 'Outfit'; font-size: .82rem; font-weight: 600; letter-spacing: .01em;
+  border: none; border-radius: var(--r); cursor: pointer; text-decoration: none;
+  transition: background .2s, transform .2s; white-space: nowrap;
+}
+.btn-primary:hover { background: #2e2a25; transform: translateY(-1px); }
+.btn-primary i { font-size: .85rem; }
+
+.btn-ghost {
+  display: inline-flex; align-items: center; gap: .45rem;
+  padding: .6rem 1.3rem;
+  background: transparent; color: var(--text2);
+  font-family: 'Outfit'; font-size: .82rem; font-weight: 500;
+  border: 1px solid var(--border2); border-radius: var(--r);
+  cursor: pointer; text-decoration: none; transition: all .2s; white-space: nowrap;
+}
+.btn-ghost:hover { border-color: var(--gold); color: var(--text); }
+
+.hamburger {
+  display: none; flex-direction: column; gap: 5px;
+  background: none; border: none; cursor: pointer;
+  padding: .4rem; border-radius: 4px; z-index: 1001;
+}
+.hamburger span {
+  display: block; width: 22px; height: 2px;
+  background: var(--text); border-radius: 2px;
+  transition: transform .35s, opacity .35s, width .35s;
+  transform-origin: center;
+}
+.hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+.hamburger.open span:nth-child(2) { opacity: 0; width: 0; }
+.hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+.drawer {
+  position: fixed; top: 0; right: -100%; width: min(340px, 100vw);
+  height: 100vh; z-index: 1000;
+  background: var(--card);
+  box-shadow: -8px 0 40px rgba(26,24,21,0.12);
+  transition: right .4s cubic-bezier(.4,0,.2,1);
+  display: flex; flex-direction: column;
+  padding: calc(var(--nav-h) + 1.5rem) 2rem 2.5rem;
+  gap: .2rem; overflow-y: auto;
+}
+.drawer.open { right: 0; }
+.drawer-link {
+  display: flex; align-items: center; gap: .8rem;
+  padding: .9rem 1rem; border-radius: var(--r);
+  font-size: 1rem; font-weight: 500; color: var(--text2);
+  text-decoration: none; transition: all .2s;
+  border-bottom: 1px solid var(--border);
+}
+.drawer-link:last-of-type { border-bottom: none; }
+.drawer-link:hover { background: var(--bg2); color: var(--text); }
+.drawer-link i { color: var(--gold); font-size: 1rem; width: 20px; text-align: center; }
+.drawer-cta { margin-top: 1.5rem; }
+
+.overlay-bg {
+  position: fixed; inset: 0; z-index: 999;
+  background: rgba(26,24,21,.35);
+  backdrop-filter: blur(3px);
+  opacity: 0; pointer-events: none; transition: opacity .3s;
+}
+.overlay-bg.show { opacity: 1; pointer-events: all; }
+
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; text-align: center;
+  padding: calc(var(--nav-h) + clamp(3rem,8vw,5rem)) clamp(1.2rem,5vw,3rem) clamp(3rem,6vw,5rem);
+  position: relative; overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(201,168,76,.1) 0%, transparent 70%),
+  radial-gradient(ellipse 50% 40% at 80% 80%, rgba(201,168,76,.06) 0%, transparent 60%);
+}
+
+.hero-pattern {
+  position: absolute; inset: 0; pointer-events: none; opacity: .4;
+  background-image: radial-gradient(circle, rgba(26,24,21,.06) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 75%);
+}
+
+.hero-badge {
+  display: inline-flex; align-items: center; gap: .6rem;
+  background: var(--card); border: 1px solid var(--border2);
+  border-radius: 100px; padding: .4rem 1rem .4rem .6rem;
+  font-size: .75rem; font-weight: 600; color: var(--text2);
+  margin-bottom: clamp(1.5rem,3vw,2.5rem); letter-spacing: .02em;
+  box-shadow: var(--shadow); animation: fadeUp .8s ease both;
+}
+.hero-badge-dot {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold), var(--gold2));
+  display: flex; align-items: center; justify-content: center;
+  font-size: .7rem; color: #fff;
+}
+
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.6rem, 9vw, 8rem);
+  font-weight: 800; line-height: 1.0; letter-spacing: -.02em;
+  color: var(--text);
+  animation: fadeUp .9s .1s ease both;
+  max-width: 14ch;
+}
+.hero-title em {
+  font-style: normal;
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold2) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-sub {
+  font-size: clamp(.9rem,2vw,1.15rem); color: var(--muted); font-weight: 400;
+  max-width: 480px; line-height: 1.8; margin: clamp(1.2rem,2.5vw,2rem) auto 0;
+  animation: fadeUp .9s .2s ease both;
+}
+
+.hero-actions {
+  display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+  margin-top: clamp(2rem,4vw,3rem); animation: fadeUp .9s .3s ease both;
+}
+
+.btn-primary-lg {
+  display: inline-flex; align-items: center; gap: .6rem;
+  padding: .85rem 2rem;
+  background: var(--text); color: var(--bg);
+  font-family: 'Outfit'; font-size: .9rem; font-weight: 600;
+  border: none; border-radius: var(--r); cursor: pointer; text-decoration: none;
+  transition: background .2s, transform .2s, box-shadow .2s;
+  box-shadow: 0 4px 20px rgba(26,24,21,.18);
+}
+.btn-primary-lg:hover { background: #2e2a25; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(26,24,21,.22); }
+
+.btn-ghost-lg {
+  display: inline-flex; align-items: center; gap: .6rem;
+  padding: .85rem 2rem;
+  background: transparent; color: var(--text);
+  font-family: 'Outfit'; font-size: .9rem; font-weight: 600;
+  border: 1.5px solid var(--border2); border-radius: var(--r);
+  cursor: pointer; text-decoration: none; transition: all .2s;
+}
+.btn-ghost-lg:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+
+.marquee-track {
+  width: 100%; overflow: hidden;
+  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  padding: .85rem 0; margin-top: clamp(3rem,6vw,5rem);
+  background: var(--bg2); animation: fadeUp .9s .4s ease both;
+}
+.marquee-inner { display: flex; gap: 2.5rem; white-space: nowrap; animation: scroll 28s linear infinite; width: max-content; }
+.marquee-item {
+  display: inline-flex; align-items: center; gap: .7rem;
+  font-size: .72rem; font-weight: 600; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--muted);
+}
+.marquee-item::after { content: '✦'; color: var(--gold); font-size: .6rem; }
+@keyframes scroll { to { transform: translateX(-50%); } }
+
+.stats {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  background: var(--card);
+  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+}
+.stat-cell {
+  padding: clamp(1.8rem,4vw,3rem) clamp(1rem,2vw,1.5rem);
+  text-align: center;
+  border-right: 1px solid var(--border);
+  position: relative; overflow: hidden;
+}
+.stat-cell:last-child { border-right: none; }
+.stat-cell::before {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+  height: 2px; background: linear-gradient(90deg, var(--gold), var(--gold2));
+  transform: scaleX(0); transform-origin: left; transition: transform .7s ease;
+}
+.stat-cell.inview::before { transform: scaleX(1); }
+.stat-n {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 700;
+  color: var(--text); line-height: 1;
+}
+.stat-n span { color: var(--gold); }
+.stat-l { font-size: .72rem; font-weight: 600; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); margin-top: .4rem; }
+
+section { padding: clamp(4rem,8vw,8rem) clamp(1.2rem,5vw,3.5rem); }
+.container { max-width: 1180px; margin: 0 auto; }
+
+.section-label {
+  display: inline-flex; align-items: center; gap: .6rem;
+  font-size: .72rem; font-weight: 700; letter-spacing: .25em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 1rem;
+}
+.section-label::before { content: ''; width: 20px; height: 1.5px; background: var(--gold); }
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem,6vw,4rem); font-weight: 700; line-height: 1.1; letter-spacing: -.02em;
+}
+
+#services { background: var(--bg2); }
+
+.services-header {
+  display: flex; justify-content: space-between; align-items: flex-end;
+  flex-wrap: wrap; gap: 2rem; margin-bottom: clamp(2.5rem,5vw,4rem);
+}
+.services-desc { font-size: .9rem; color: var(--muted); max-width: 260px; line-height: 1.75; text-align: right; }
+
+.services-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px;
+  background: var(--border);
+  border-radius: calc(var(--r) + 2px); overflow: hidden;
+}
+
+.s-card {
+  background: var(--card); padding: clamp(1.8rem,3.5vw,2.5rem) clamp(1.5rem,3vw,2rem);
+  position: relative; overflow: hidden; cursor: pointer;
+  transition: background .3s, transform .3s;
+  display: flex; flex-direction: column; gap: 1rem;
+}
+.s-card:hover { background: var(--bg); }
+
+.s-card-top { display: flex; justify-content: space-between; align-items: flex-start; }
+.s-num { font-size: .72rem; font-weight: 700; letter-spacing: .18em; color: var(--muted); }
+.s-icon-wrap {
+  width: 46px; height: 46px;
+  background: linear-gradient(135deg, #faf6ee, #f0ead8);
+  border: 1px solid rgba(201,168,76,.25);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem; color: var(--gold);
+  transition: background .3s, box-shadow .3s;
+}
+.s-card:hover .s-icon-wrap { background: linear-gradient(135deg, var(--gold), var(--gold2)); color: #fff; box-shadow: 0 4px 16px rgba(201,168,76,.3); }
+
+.s-title { font-size: .95rem; font-weight: 700; letter-spacing: -.01em; color: var(--text); }
+.s-body { font-size: .82rem; color: var(--muted); line-height: 1.75; flex: 1; }
+.s-link {
+  display: inline-flex; align-items: center; gap: .4rem;
+  font-size: .78rem; font-weight: 600; color: var(--gold);
+  opacity: 0; transform: translateY(6px);
+  transition: opacity .25s, transform .25s;
+}
+.s-card:hover .s-link { opacity: 1; transform: translateY(0); }
+
+#team { background: var(--bg); }
+
+.team-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: clamp(1rem,2vw,1.5rem); margin-top: clamp(2.5rem,5vw,4rem);
+}
+
+.t-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: calc(var(--r)*2); padding: clamp(1.5rem,3vw,2rem) 1.5rem;
+  text-align: center; position: relative; overflow: hidden;
+  transition: border-color .3s, transform .3s, box-shadow .3s;
+  display: flex; flex-direction: column; align-items: center;
+}
+.t-card:hover { border-color: var(--gold); transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+
+.t-avatar-wrap {
+  width: clamp(72px,12vw,90px); height: clamp(72px,12vw,90px);
+  border-radius: 50%; margin: 0 auto 1.2rem; position: relative;
+}
+.t-avatar-wrap::before {
+  content: ''; position: absolute; inset: -3px; border-radius: 50%;
+  background: conic-gradient(var(--gold), var(--gold2), transparent, var(--gold));
+  opacity: 0; transition: opacity .3s; animation: spin 3s linear infinite;
+}
+.t-card:hover .t-avatar-wrap::before { opacity: 1; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.t-avatar-inner {
+  position: absolute;  inset: 2px; border-radius: 50%; overflow: hidden; background: var(--bg2);
+}
+.t-avatar-inner img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 50%; }
+
+.t-name { font-size: .95rem; font-weight: 700; letter-spacing: -.01em; color: var(--text); }
+.t-role { font-size: .75rem; color: var(--gold); font-weight: 500; margin-top: .25rem; letter-spacing: .04em; line-height: 1.4; }
+.t-divider { width: 30px; height: 2px; background: linear-gradient(90deg, var(--gold), var(--gold2)); border-radius: 2px; margin: .85rem auto 0; }
+
+.cta-band {
+  background: var(--text); color: var(--bg);
+  padding: clamp(4rem,8vw,7rem) clamp(1.2rem,5vw,3.5rem);
+  text-align: center; position: relative; overflow: hidden;
+}
+.cta-band::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse 60% 60% at 50% 0%, rgba(201,168,76,.18) 0%, transparent 65%);
+}
+.cta-band h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem,7vw,5.5rem); font-weight: 700; line-height: 1.1; letter-spacing: -.02em;
+  position: relative; z-index: 1;
+}
+.cta-band h2 em { font-style: normal; color: var(--gold2); }
+.cta-band p { font-size: clamp(.85rem,1.5vw,.95rem); color: rgba(248,247,244,.6); max-width: 380px; margin: 1.5rem auto 2.5rem; line-height: 1.75; position: relative; z-index: 1; }
+.btn-gold {
+  display: inline-flex; align-items: center; gap: .6rem;
+  padding: .9rem 2.2rem;
+  background: linear-gradient(135deg, var(--gold), var(--gold2));
+  color: var(--text); font-family: 'Outfit'; font-size: .9rem; font-weight: 700;
+  border: none; border-radius: var(--r); cursor: pointer; text-decoration: none;
+  transition: transform .2s, box-shadow .2s; position: relative; z-index: 1;
+  box-shadow: 0 4px 20px rgba(201,168,76,.35);
+}
+.btn-gold:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(201,168,76,.45); }
+
+footer {
+  background: #f0ede7;
+  border-top: 1px solid var(--border);
+  padding: clamp(3rem,6vw,5rem) clamp(1.2rem,5vw,3.5rem) clamp(1.5rem,3vw,2.5rem);
+}
+.footer-inner { max-width: 1180px; margin: 0 auto; }
+.footer-grid {
+  display: grid; grid-template-columns: 2fr 1fr 1fr;
+  gap: clamp(2rem,5vw,5rem); margin-bottom: clamp(2rem,4vw,3.5rem);
+}
+.f-brand-name {
+  font-family: 'Outfit'; font-weight: 800; font-size: 1.5rem; letter-spacing: -.02em; color: var(--text);
+  display: flex; align-items: center; gap: .5rem; margin-bottom: 1rem;
+}
+.f-brand-name .logo-dot { width: 8px; height: 8px; }
+.f-desc { font-size: .85rem; color: var(--muted); line-height: 1.8; max-width: 280px; }
+.f-col-title {
+  font-size: .7rem; font-weight: 700; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--text); margin-bottom: 1.2rem;
+  display: flex; align-items: center; gap: .6rem;
+}
+.f-col-title::after { content: ''; flex: 1; height: 1px; background: var(--border2); }
+.f-links { list-style: none; display: flex; flex-direction: column; gap: .75rem; }
+.f-links a {
+  font-size: .84rem; color: var(--muted); text-decoration: none;
+  display: flex; align-items: center; gap: .6rem;
+  transition: color .2s, gap .2s;
+}
+.f-links a:hover { color: var(--text); gap: .85rem; }
+.f-links a i { font-size: .85rem; color: var(--gold); width: 16px; text-align: center; }
+.footer-bottom {
+  border-top: 1px solid var(--border); padding-top: 1.8rem;
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;
+}
+.footer-bottom p { font-size: .78rem; color: var(--muted); }
+.socials { display: flex; gap: .7rem; }
+.soc-btn {
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 1px solid var(--border2); background: var(--card);
+  display: flex; align-items: center; justify-content: center;
+  font-size: .8rem; color: var(--muted); text-decoration: none;
+  transition: all .2s; flex-shrink: 0;
+}
+.soc-btn:hover { border-color: var(--gold); color: var(--gold); box-shadow: 0 0 12px rgba(201,168,76,.2); }
+
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 2000;
+  background: rgba(26,24,21,.5); backdrop-filter: blur(10px);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity .3s;
+  padding: clamp(.8rem,3vw,2rem); overflow-y: auto;
+}
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+.modal {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 12px; width: 100%; max-width: 540px;
+  padding: clamp(2rem,4vw,2.8rem);
+  transform: translateY(24px) scale(.97);
+  transition: transform .4s cubic-bezier(.34,1.56,.64,1);
+  position: relative; max-height: 90vh; overflow-y: auto;
+  box-shadow: var(--shadow-lg); margin: auto;
+}
+.modal-overlay.open .modal { transform: translateY(0) scale(1); }
+.modal::-webkit-scrollbar { width: 3px; }
+.modal::-webkit-scrollbar-thumb { background: var(--gold); }
+.modal-x {
+  position: absolute; top: 1.2rem; right: 1.2rem;
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--bg2); border: none; cursor: pointer; color: var(--muted);
+  display: flex; align-items: center; justify-content: center; font-size: .9rem;
+  transition: all .2s;
+}
+.modal-x:hover { background: #fde8e8; color: #c0392b; }
+.modal-tag { font-size: .7rem; font-weight: 700; letter-spacing: .25em; text-transform: uppercase; color: var(--gold); margin-bottom: .7rem; }
+.modal-title { font-family: 'Playfair Display', serif; font-size: clamp(1.5rem,4vw,2.2rem); font-weight: 700; line-height: 1.2; margin-bottom: .5rem; color: var(--text); }
+.modal-title em { font-style: normal; color: var(--gold); }
+.modal-sub { font-size: .83rem; color: var(--muted); margin-bottom: 2rem; line-height: 1.65; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.fg { margin-bottom: 1rem; }
+.fg label { display: block; font-size: .7rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--text2); margin-bottom: .4rem; }
+.fg input, .fg select, .fg textarea {
+  width: 100%; background: var(--bg2); border: 1.5px solid var(--border2);
+  color: var(--text); font-family: 'Outfit'; font-size: .88rem;
+  padding: .7rem .9rem; border-radius: var(--r);
+  transition: border-color .2s, box-shadow .2s; outline: none; -webkit-appearance: none;
+}
+.fg input:focus, .fg select:focus, .fg textarea:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,168,76,.12); }
+.fg select { cursor: pointer; }
+.fg select option { background: var(--card); }
+.fg textarea { resize: none; min-height: 90px; }
+.check-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .55rem; }
+.chk {
+  display: flex; align-items: center; gap: .55rem;
+  cursor: pointer; padding: .5rem .65rem;
+  border: 1.5px solid var(--border2); border-radius: var(--r);
+  transition: all .2s; background: var(--bg);
+}
+.chk:hover { border-color: var(--gold); background: #fdf9ef; }
+.chk input[type="checkbox"] {
+  width: 15px; height: 15px; appearance: none; -webkit-appearance: none;
+  border: 1.5px solid rgba(201,168,76,.5); border-radius: 3px; cursor: pointer;
+  background: var(--card); position: relative; flex-shrink: 0;
+  transition: all .2s;
+}
+.chk input[type="checkbox"]:checked { background: var(--gold); border-color: var(--gold); }
+.chk input[type="checkbox"]:checked::after { content: '✓'; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 900; color: #fff; }
+.chk span { font-size: .78rem; color: var(--text2); font-weight: 500; display: flex; align-items: center; gap: .35rem; }
+.chk span i { color: var(--gold); font-size: .85rem; }
+.chk input:checked + span { color: var(--text); font-weight: 600; }
+.select-all-row { grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: .55rem; margin-bottom: .2rem; }
+.form-submit {
+  width: 100%; padding: .9rem; margin-top: 1.5rem;
+  background: var(--text); color: var(--bg);
+  font-family: 'Outfit'; font-size: .88rem; font-weight: 700; letter-spacing: .04em;
+  border: none; border-radius: var(--r); cursor: pointer;
+  transition: background .2s, transform .2s, box-shadow .2s;
+  display: flex; align-items: center; justify-content: center; gap: .5rem;
+}
+.form-submit:hover { background: #2e2a25; transform: translateY(-2px); box-shadow: 0 6px 24px rgba(26,24,21,.18); }
+.success-panel { display: none; text-align: center; padding: 2.5rem 1rem; }
+.success-icon {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: linear-gradient(135deg, #d4edda, #a8d5b5);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.8rem; color: #27ae60; margin: 0 auto 1.5rem;
+  animation: pop .5s cubic-bezier(.34,1.56,.64,1) both;
+}
+@keyframes pop { from { transform: scale(0); } to { transform: scale(1); } }
+.success-panel h3 { font-family: 'Playfair Display'; font-size: 1.6rem; font-weight: 700; color: var(--text); margin-bottom: .5rem; }
+.success-panel p { font-size: .85rem; color: var(--muted); line-height: 1.65; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity .75s ease, transform .75s ease; }
+.reveal.v { opacity: 1; transform: translateY(0); }
+.d1 { transition-delay: .1s; } .d2 { transition-delay: .2s; } .d3 { transition-delay: .3s; }
+
+@media (max-width: 960px) {
+  .nav-center { display: none; }
+  .hamburger { display: flex; }
+  .services-grid { grid-template-columns: 1fr 1fr; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .footer-grid > div:first-child { grid-column: span 2; }
+}
+@media (max-width: 640px) {
+  :root { --nav-h: 60px; }
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .stat-cell { border-bottom: 1px solid var(--border); }
+  .stat-cell:nth-child(odd) { border-right: 1px solid var(--border); }
+  .stat-cell:nth-child(even) { border-right: none; }
+  .stat-cell:last-child, .stat-cell:nth-last-child(2):nth-child(odd) { border-bottom: none; }
+  .services-grid { grid-template-columns: 1fr; }
+  .team-grid { grid-template-columns: repeat(2, 1fr); }
+  .footer-grid { grid-template-columns: 1fr; }
+  .footer-grid > div:first-child { grid-column: span 1; }
+  .form-row { grid-template-columns: 1fr; }
+  .check-grid { grid-template-columns: 1fr; }
+  .select-all-row { grid-column: span 1; }
+  .hero-actions { flex-direction: column; width: 100%; }
+  .btn-primary-lg, .btn-ghost-lg { width: 100%; justify-content: center; }
+  .services-desc { text-align: left; }
+  .services-header { flex-direction: column; align-items: flex-start; }
+  .footer-bottom { flex-direction: column; align-items: center; text-align: center; }
+}
+@media (max-width: 400px) {
+  .team-grid { grid-template-columns: 1fr 1fr; }
+  .hero-badge { font-size: .7rem; }
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="#home" class="logo"><span class="logo-dot"></span>TechVersai</a>
+  <div class="nav-center">
+    <a href="#services">Services</a>
+    <a href="#team">Team</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <div class="nav-right">
+    <a href="#contact" class="btn-ghost" style="display:none" id="navContact">Contact</a>
+    <button class="btn-primary" onclick="openModal()"><i class="bi bi-arrow-up-right"></i> Get Started</button>
+    <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false" onclick="toggleDrawer()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="overlay-bg" id="overlayBg" onclick="toggleDrawer()"></div>
+<div class="drawer" id="drawer">
+  <a href="#services" class="drawer-link" onclick="closeDrawer()"><i class="bi bi-grid-1x2"></i> Services</a>
+  <a href="#team" class="drawer-link" onclick="closeDrawer()"><i class="bi bi-people"></i> Team</a>
+  <a href="#contact" class="drawer-link" onclick="closeDrawer()"><i class="bi bi-envelope"></i> Contact</a>
+  <button class="btn-primary drawer-cta" style="width:100%;justify-content:center;padding:.85rem" onclick="openModal();closeDrawer()"><i class="bi bi-arrow-up-right"></i> Get Started</button>
+</div>
+
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-pattern"></div>
+  <div class="hero-badge">
+    <span class="hero-badge-dot">✦</span>
+    Est. 2021 &nbsp;·&nbsp; 4 Years of Industry Experience
+  </div>
+  <h1 class="hero-title">Digital <em>Transformation</em> Services</h1>
+  <p class="hero-sub">Empowering businesses with next-gen digital innovation. We build, integrate, and elevate brands into the future.</p>
+  <div class="hero-actions">
+    <button class="btn-primary-lg" onclick="openModal()"><i class="bi bi-arrow-up-right"></i> Start Your Project</button>
+    <a href="#services" class="btn-ghost-lg"><i class="bi bi-grid-1x2"></i> Explore Services</a>
+  </div>
+  <div class="marquee-track">
+    <div class="marquee-inner">
+      <span class="marquee-item">Mobile Development</span>
+      <span class="marquee-item">Custom Websites</span>
+      <span class="marquee-item">AI Solutions</span>
+      <span class="marquee-item">WhatsApp Business</span>
+      <span class="marquee-item">Site Maintenance</span>
+      <span class="marquee-item">Digital Innovation</span>
+      <span class="marquee-item">iOS Development</span>
+      <span class="marquee-item">Smart Automation</span>
+      <span class="marquee-item">Mobile Development</span>
+      <span class="marquee-item">Custom Websites</span>
+      <span class="marquee-item">AI Solutions</span>
+      <span class="marquee-item">WhatsApp Business</span>
+      <span class="marquee-item">Site Maintenance</span>
+      <span class="marquee-item">Digital Innovation</span>
+      <span class="marquee-item">iOS Development</span>
+      <span class="marquee-item">Smart Automation</span>
+    </div>
+  </div>
+</section>
+
+<div class="stats reveal" id="statsRow">
+  <div class="stat-cell">
+    <div class="stat-n"><span class="count" data-t="4">0</span><span style="color:var(--gold)">+</span></div>
+    <div class="stat-l">Years Experience</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-n"><span class="count" data-t="50">0</span><span style="color:var(--gold)">+</span></div>
+    <div class="stat-l">Projects Delivered</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-n"><span class="count" data-t="6">0</span></div>
+    <div class="stat-l">Core Services</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-n"><span class="count" data-t="100">0</span><span style="color:var(--gold)">%</span></div>
+    <div class="stat-l">Client Satisfaction</div>
+  </div>
+</div>
+
+<section id="services">
+  <div class="container">
+    <div class="services-header reveal">
+      <div>
+        <div class="section-label">What We Build</div>
+        <h2 class="section-title">Our Services</h2>
+      </div>
+      <p class="services-desc">End-to-end digital solutions crafted with precision, powered by cutting-edge technology.</p>
+    </div>
+    <div class="services-grid">
+      <div class="s-card reveal">
+        <div class="s-card-top"><span class="s-num">01</span><div class="s-icon-wrap"><i class="bi bi-phone-vibrate"></i></div></div>
+        <div class="s-title">Mobile & iOS Development</div>
+        <p class="s-body">Native-grade mobile apps for iOS and Android. Buttery smooth UX, lightning performance, and features users love.</p>
+        <span class="s-link">Learn more <i class="bi bi-arrow-right"></i></span>
+      </div>
+      <div class="s-card reveal d1">
+        <div class="s-card-top"><span class="s-num">02</span><div class="s-icon-wrap"><i class="bi bi-window-desktop"></i></div></div>
+        <div class="s-title">Custom Website Design</div>
+        <p class="s-body">Bespoke websites that captivate and convert. Pixel-perfect design, blazing performance, and built for lasting impact.</p>
+        <span class="s-link">Learn more <i class="bi bi-arrow-right"></i></span>
+      </div>
+      <div class="s-card reveal d2">
+        <div class="s-card-top"><span class="s-num">03</span><div class="s-icon-wrap"><i class="bi bi-tools"></i></div></div>
+        <div class="s-title">Website Maintenance</div>
+        <p class="s-body">Continuous monitoring, updates, security patches, and performance tuning — so your site stays flawless 24/7.</p>
+        <span class="s-link">Learn more <i class="bi bi-arrow-right"></i></span>
+      </div>
+      <div class="s-card reveal">
+        <div class="s-card-top"><span class="s-num">04</span><div class="s-icon-wrap"><i class="bi bi-whatsapp"></i></div></div>
+        <div class="s-title">WhatsApp Business Integration</div>
+        <p class="s-body">Connect with millions on the world's #1 platform. Automate conversations, close leads, and scale engagement.</p>
+        <span class="s-link">Learn more <i class="bi bi-arrow-right"></i></span>
+      </div>
+      <div class="s-card reveal d1">
+        <div class="s-card-top"><span class="s-num">05</span><div class="s-icon-wrap"><i class="bi bi-cpu"></i></div></div>
+        <div class="s-title">AI Solutions</div>
+        <p class="s-body">Intelligent automation pipelines and AI integrations that fundamentally transform how your business operates.</p>
+        <span class="s-link">Learn more <i class="bi bi-arrow-right"></i></span>
+      </div>
+      <div class="s-card reveal d2">
+        <div class="s-card-top"><span class="s-num">06</span><div class="s-icon-wrap"><i class="bi bi-chat-dots"></i></div></div>
+        <div class="s-title">AI Chatbot Development</div>
+        <p class="s-body">Custom intelligent chatbots built to handle customer support, lead generation, and 24/7 instant engagement.</p>
+        <span class="s-link">Learn more <i class="bi bi-arrow-right"></i></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="team">
+  <div class="container">
+    <div class="section-label reveal">The Minds Behind</div>
+    <h2 class="section-title reveal">Our Expert Team</h2>
+    <p class="reveal" style="color:var(--muted);margin-top:1rem;font-size:.9rem;max-width:420px;line-height:1.8;">A powerhouse crew of builders, designers, and AI specialists — united by one mission: your success.</p>
+    <div class="team-grid">
+      <div class="t-card reveal">
+        <div class="t-avatar-wrap">
+          <div class="t-avatar-inner">
+            <img loading="lazy" src="https://image2url.com/r2/default/images/1773310648670-7ed463c6-bf75-422d-9d3e-8da199065132.png" alt="Ayodhya Gupta" onerror="this.src='https://ui-avatars.com/api/?name=Ayodhya+Gupta&background=f8f7f4&color=c9a84c&size=200'">
+          </div>
+        </div>
+        <div class="t-name">Ayodhya Gupta</div>
+        <div class="t-role">Founder & Lead Dev / Full Stack</div>
+        <div class="t-divider"></div>
+      </div>
+      <div class="t-card reveal d1">
+        <div class="t-avatar-wrap">
+          <div class="t-avatar-inner">
+            <img loading="lazy" src="https://image2url.com/r2/default/images/1773311299084-06368ecc-a88c-4fd4-ae32-5e2e2bfe2a43.jpg" alt="Himanshu" onerror="this.src='https://ui-avatars.com/api/?name=Himanshu&background=f8f7f4&color=c9a84c&size=200'">
+          </div>
+        </div>
+        <div class="t-name">Himanshu</div>
+        <div class="t-role">AI Developer</div>
+        <div class="t-divider"></div>
+      </div>
+      <div class="t-card reveal d2">
+        <div class="t-avatar-wrap">
+          <div class="t-avatar-inner">
+            <img loading="lazy" src="https://image2url.com/r2/default/images/1773311211362-25817102-4a20-4329-8019-69b2d221d4e2.jpg" alt="Ankit" onerror="this.src='https://ui-avatars.com/api/?name=Ankit&background=f8f7f4&color=c9a84c&size=200'">
+          </div>
+        </div>
+        <div class="t-name">Ankit</div>
+        <div class="t-role">Backend / App Developer</div>
+        <div class="t-divider"></div>
+      </div>
+      <div class="t-card reveal d3">
+        <div class="t-avatar-wrap">
+          <div class="t-avatar-inner">
+            <img loading="lazy" src="https://image2url.com/r2/default/images/1773310931796-a95d203f-0804-4a30-8f27-72a5451b42cb.jpg" alt="Ankesh" onerror="this.src='https://ui-avatars.com/api/?name=Ankesh&background=f8f7f4&color=c9a84c&size=200'">
+          </div>
+        </div>
+        <div class="t-name">Ankesh</div>
+        <div class="t-role">Full Stack Developer</div>
+        <div class="t-divider"></div>
+      </div>
+      <div class="t-card reveal d3">
+        <div class="t-avatar-wrap">
+          <div class="t-avatar-inner">
+            <img loading="lazy" src="https://image2url.com/r2/default/images/1773312332680-54c7f08a-ff9a-4a8a-ab48-1703cda5224f.jpeg" alt="Sunil Patel" onerror="this.src='https://ui-avatars.com/api/?name=Sunil+Patel&background=f8f7f4&color=c9a84c&size=200'">
+          </div>
+        </div>
+        <div class="t-name">Sunil Patel</div>
+        <div class="t-role">Marketing & Media Manager / HR</div>
+        <div class="t-divider"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="cta-band reveal">
+  <h2>Ready to <em>Transform</em><br>Your Business?</h2>
+  <p>Let's build something extraordinary together. Fill in your requirements and we'll reach out within 24 hours.</p>
+  <button class="btn-gold" onclick="openModal()"><i class="bi bi-arrow-up-right"></i> Start Your Project</button>
+</div>
+
+<footer id="contact">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div>
+        <div class="f-brand-name"><span class="logo-dot"></span>TechVersai</div>
+        <p class="f-desc">Where innovation meets execution. Transforming businesses through next-generation digital solutions — built with precision, delivered with purpose.</p>
+      </div>
+      <div>
+        <div class="f-col-title">Services</div>
+        <ul class="f-links">
+          <li><a href="#services"><i class="bi bi-phone"></i> Mobile & iOS Dev</a></li>
+          <li><a href="#services"><i class="bi bi-window-desktop"></i> Website Design</a></li>
+          <li><a href="#services"><i class="bi bi-tools"></i> Maintenance</a></li>
+          <li><a href="#services"><i class="bi bi-whatsapp"></i> WhatsApp Integration</a></li>
+          <li><a href="#services"><i class="bi bi-cpu"></i> AI Solutions</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="f-col-title">Connect</div>
+        <ul class="f-links">
+          <li><a href="mailto:ayodhyaayodhya453@gmail.com"><i class="bi bi-envelope"></i> ayodhyaayodhya453@gmail.com</a></li>
+          <li><a href="tel:+919682780369"><i class="bi bi-telephone"></i> +91 9682780369</a></li>
+          <li><a href="https://linkedin.com/in/AyodhyaGupta" target="_blank" rel="noopener"><i class="bi bi-linkedin"></i> LinkedIn</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 TechVersai — All Rights Reserved</p>
+      <div class="socials">
+        <a href="https://linkedin.com/in/ayodhya-gupta-8b5b9028a" class="soc-btn" target="_blank" rel="noopener"><i class="bi bi-linkedin"></i></a>
+        <a href="mailto:ayodhyaayodhya453@gmail.com" class="soc-btn"><i class="bi bi-envelope-fill"></i></a>
+        <a href="https://www.aivorasolutions.com" class="soc-btn" target="_blank" rel="noopener"><i class="bi bi-globe"></i></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeOnOverlay(event)">
+  <div class="modal" id="modal">
+    <button class="modal-x" onclick="closeModal()">✕</button>
+    <div id="formContent">
+      <div class="modal-tag">✦ Free Consultation</div>
+      <h2 class="modal-title">Let's <em>Build</em> Together</h2>
+      <p class="modal-sub">Tell us about your project and we'll craft a personalised digital strategy just for you.</p>
+      <div class="form-row">
+        <div class="fg">
+          <label>Full Name *</label>
+          <input type="text" id="fname" placeholder="Your name">
+        </div>
+        <div class="fg">
+          <label>Phone Number *</label>
+          <input type="tel" id="fphone" placeholder="+91 XXXXX XXXXX">
+        </div>
+      </div>
+      <div class="fg">
+        <label>Email Address *</label>
+        <input type="email" id="femail" placeholder="your@email.com">
+      </div>
+      <div class="fg">
+        <label>Company / Brand Name</label>
+        <input type="text" id="fcompany" placeholder="Optional">
+      </div>
+      <div class="fg">
+        <label>Services Needed</label>
+        <div class="check-grid">
+          <label class="chk select-all-row">
+            <input type="checkbox" id="selectAll" onchange="toggleAll(this)">
+            <span><strong>Select All</strong></span>
+          </label>
+          <label class="chk">
+            <input type="checkbox" class="svc" value="Mobile & iOS">
+            <span><i class="bi bi-phone"></i> Mobile & iOS</span>
+          </label>
+          <label class="chk">
+            <input type="checkbox" class="svc" value="Website Design">
+            <span><i class="bi bi-globe2"></i> Website Design</span>
+          </label>
+          <label class="chk">
+            <input type="checkbox" class="svc" value="Maintenance">
+            <span><i class="bi bi-tools"></i> Maintenance</span>
+          </label>
+          <label class="chk">
+            <input type="checkbox" class="svc" value="WhatsApp">
+            <span><i class="bi bi-whatsapp"></i> WhatsApp</span>
+          </label>
+          <label class="chk">
+            <input type="checkbox" class="svc" value="AI Solutions">
+            <span><i class="bi bi-cpu"></i> AI Solutions</span>
+          </label>
+          <label class="chk">
+            <input type="checkbox" class="svc" value="AI Chatbot">
+            <span><i class="bi bi-chat-dots"></i> AI Chatbot</span>
+          </label>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="fg">
+          <label>Budget Range</label>
+          <select id="fbudget">
+            <option value="" disabled selected>Select budget</option>
+            <option>Under ₹25,000</option>
+            <option>₹25,000 – ₹75,000</option>
+            <option>₹75,000 – ₹2,00,000</option>
+            <option>₹2,00,000+</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Timeline</label>
+          <select id="ftimeline">
+            <option value="" disabled selected>When to start?</option>
+            <option>ASAP</option>
+            <option>Within 1 Month</option>
+            <option>1–3 Months</option>
+            <option>3+ Months</option>
+          </select>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Project Details</label>
+        <textarea id="fmessage" placeholder="Tell us about your idea, goals, or any specific requirements…"></textarea>
+      </div>
+      <button class="form-submit" onclick="submitForm()"><i class="bi bi-whatsapp"></i> Send via WhatsApp</button>
+    </div>
+    <div class="success-panel" id="successPanel">
+      <div class="success-icon"><i class="bi bi-check-lg"></i></div>
+      <h3>Request Sent!</h3>
+      <p>Opening WhatsApp with your details. Our team will respond <strong>within 2 hours</strong>!</p>
+    </div>
+  </div>
+</div>
+
+<script>
+/* NAV SCROLL */
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 40);
+});
+
+/* DRAWER */
+function toggleDrawer() {
+  const d = document.getElementById('drawer');
+  const h = document.getElementById('hamburger');
+  const o = document.getElementById('overlayBg');
+  const open = d.classList.toggle('open');
+  h.classList.toggle('open', open);
+  o.classList.toggle('show', open);
+  document.body.style.overflow = open ? 'hidden' : '';
+  h.setAttribute('aria-expanded', open);
+}
+function closeDrawer() {
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('hamburger').classList.remove('open');
+  document.getElementById('overlayBg').classList.remove('show');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeDrawer(); closeModal(); } });
+
+/* SCROLL REVEAL */
+const ro = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('v'); ro.unobserve(e.target); } });
+}, { threshold: .1 });
+document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+/* STAT COUNTER */
+const co = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.querySelectorAll('.count').forEach(el => {
+      const target = +el.dataset.t; let current = 0;
+      const step = target / 60;
+      const iv = setInterval(() => {
+        current = Math.min(current + step, target);
+        el.textContent = Math.floor(current);
+        if (current >= target) clearInterval(iv);
+      }, 25);
+    });
+    e.target.querySelectorAll('.stat-cell').forEach(c => c.classList.add('inview'));
+    co.unobserve(e.target);
+  });
+}, { threshold: .3 });
+document.querySelectorAll('#statsRow').forEach(el => co.observe(el));
+
+/* MODAL */
+function openModal() { document.getElementById('modalOverlay').classList.add('open'); document.body.style.overflow = 'hidden'; }
+function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); document.body.style.overflow = ''; }
+function closeOnOverlay(e) { if (e.target === document.getElementById('modalOverlay')) closeModal(); }
+
+/* SELECT ALL */
+const svcs = document.querySelectorAll('.svc');
+function toggleAll(src) { svcs.forEach(c => c.checked = src.checked); }
+svcs.forEach(cb => cb.addEventListener('change', () => {
+  document.getElementById('selectAll').checked = Array.from(svcs).every(c => c.checked);
+}));
+
+/* FORM SUBMIT */
+function submitForm() {
+  const name = document.getElementById('fname').value.trim();
+  const phone = document.getElementById('fphone').value.trim();
+  const email = document.getElementById('femail').value.trim();
+  if (!name || !phone || !email) { alert('Please fill in Name, Phone, and Email.'); return; }
+  const selected = Array.from(svcs).filter(c => c.checked).map(c => c.value).join(', ');
+  if (!selected) { alert('Please select at least one service.'); return; }
+  const company = document.getElementById('fcompany').value.trim();
+  const budget = document.getElementById('fbudget').value;
+  const timeline = document.getElementById('ftimeline').value;
+  const msg = document.getElementById('fmessage').value.trim();
+  const wa = `Hello! I'm interested in working with TechVersai.%0A%0A` +
+    `*Name:* ${name}%0A*Email:* ${email}%0A*Phone:* ${phone}%0A` +
+    (company ? `*Company:* ${company}%0A` : '') +
+    `*Services:* ${selected}%0A` +
+    (budget ? `*Budget:* ${budget}%0A` : '') +
+    (timeline ? `*Timeline:* ${timeline}%0A` : '') +
+    (msg ? `*Details:* ${msg}` : '');
+  document.getElementById('formContent').style.display = 'none';
+  document.getElementById('successPanel').style.display = 'block';
+  setTimeout(() => { window.open(`https://wa.me/919682780369?text=${wa}`, '_blank'); closeModal(); }, 1500);
+  setTimeout(() => {
+    document.getElementById('formContent').style.display = 'block';
+    document.getElementById('successPanel').style.display = 'none';
+    ['fname','fphone','femail','fcompany','fbudget','ftimeline','fmessage'].forEach(id => {
+      const el = document.getElementById(id); if (el) el.value = '';
+    });
+    svcs.forEach(c => c.checked = false);
+    document.getElementById('selectAll').checked = false;
+  }, 3500);
+}
+</script>
+</body>
+</html>
